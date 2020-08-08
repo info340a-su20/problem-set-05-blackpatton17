@@ -13,18 +13,19 @@ const COLORS_9 = {
 /* Your code goes here! */
 
 //Create a variable `h1` that refers to the `<h1>` element in the DOM.
-
+let h1 = document.querySelector("h1");
 
 //Change the `textContent` of the `<h1>` element to be "Which Swatch?"
-
+h1.textContent = "Which Swatch?";
 
 //Somehow the rainbow icon image was included without an alt tag! Set its `alt`
 //attribute to be "A beautiful rainbow".
-
+let img = document.querySelector("img");
+img.alt = "A beautiful rainbow";
 
 //Give the image the Bootstrap-provided `float-right` CSS class to make it float
 //to the right of the screen
-
+img.classList.add('float-right');
 
 /*Define a function `createColorBox()` that takes in two parameters: a color 
 string (e.g., "blue") and a numeric size (in pixels, e.g., 100). The function 
@@ -38,7 +39,14 @@ shoukld do the following:
 You can test this function by logging out the returned value and checking its
 attributes.
 */
-
+const createColorBox = (color, size) => {
+  let div = document.createElement("div");
+  div.classList.add('d-inline-block');
+  div.style.backgroundColor = color;
+  div.style.width = size + "px";
+  div.style.height = size  + "px";
+  return div;
+};
 
 
 /* Define a function `getElementWidth()` that takes in a DOM element (not a 
@@ -48,7 +56,9 @@ element.
    argument element. This method returns an Object containing the element's
    width and height. Return the `width` value of that object.
 */
-
+const getElementWidth = (el) => {
+  return el.getBoundingClientRect().width;
+};
 
 
 /* Define a function `renderPaletteRow()` that takes in two arguments: array of 
@@ -71,6 +81,13 @@ browser window unless you refresh.
 
 You should NOT include any test calls when running Jest tests!
 */
+const renderPaletteRow = (colors, parentEl) => {
+  let div = document.createElement('div');
+  colors.map(x => {
+    div.appendChild(createColorBox(x, getElementWidth(parentEl) / colors.length));
+  });
+  parentEl.appendChild(div);
+};
 
 
 
@@ -84,11 +101,18 @@ Tip: note that `COLORS_9` is an object, not an array! You'll need to use a
 
 Call your `renderPaletteTable()` method to display all the color palettes!
 */
+const renderPaletteTable = () => {
+  for (let colors in COLORS_9) {
+    renderPaletteRow(COLORS_9[colors], document.querySelector('main'));
+  }
+};
 
+renderPaletteTable();
 
 
 //Finally, remove the paragraph in the header that explains how to complete the 
 //problem.
+document.querySelector('header').removeChild(document.querySelector('p'));
 
 
 
